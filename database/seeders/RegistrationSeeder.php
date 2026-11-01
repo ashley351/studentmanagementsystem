@@ -3,96 +3,81 @@
 namespace Database\Seeders;
 
 use Illuminate\Database\Seeder;
+use Illuminate\Support\Facades\DB;
 use App\Models\Student;
 use App\Models\Course;
-use App\Models\Registration;
 
 class RegistrationSeeder extends Seeder
 {
-    public function run(): void
-    {
+    
+          public function run(): void {
+             $registrations = [ 
+                 ['registration_number' => '24/U/11375/PS',
+                  'code' => 'BUC3101', ],
+                  
+                  [ 'registration_number' => '24/U/03713/PS', 
+                  'code' => 'BUC3102', ], 
+                  
+                  [ 'registration_number' => '24/U/25160/PS', 
+                  'code' => 'BUC3101', ], 
+                  
+                  [ 'registration_number' => '24/U/20186/EVE',
+                   'code' => 'BUC3103', ],
+                   
+                   [ 'registration_number' => '24/U/06148/PS', 
+                   'code' => 'BUC3102', ], 
+                   
+                   [ 'registration_number' => '24/U/11375/PS', 
+                   'code' => 'BUC3104', ], 
+                   
+                   [ 'registration_number' => '24/U/06148/PS', 
+                   'code' => 'BUC3103', ],
+                   
+                   [ 'registration_number' => '24/U/04960/PS',
+                    'code' => 'BUC3104', ],
+                     ];
 
-        // SAMPLE STUDENT COURSE REGISTRATIONS
+        // Insert registrations
 
-        $registrations = [
+       foreach ($registrations as $data) { 
 
-            [
-                'student' => '2026/BBC/001',
-                'course' => 'BUC3101',
-            ],
+        // Find student using the correct registration number 
+        $student = Student::where(
+             'registration_number', 
+             $data['registration_number']
+             
+             )->first(); 
+        if (!$student) { throw new \RuntimeException( "Student not found: " . 
+        
+        $data['registration_number'] );
+         }
 
-            [
-                'student' => '2026/BBC/001',
-                'course' => 'BUC3102',
-            ],
+         // Find course using its course code
+          
+          $course = Course::where( 'code',
+           $data['code'] 
+           )->first(); if (!$course) { throw new \RuntimeException(
+             "Course not found: " . $data['code'] );
+              }
+          
+          // Insert registration without creating duplicates
+           
+           DB::table('course_registrations')->updateOrInsert(
+             [
+                 'student_id' => $student->id, 
+                 'course_id' => $course->id,
+                  ], 
+                  [ 'created_at' => now(),
+                  
+                  'updated_at' => now(), ] ); 
+                  }
+                   $this->command->info
+                   
+                   ( 
+                    'Sample course registrations created successfully!' 
+                    );
+                     }
 
-            [
-                'student' => '2026/BBC/002',
-                'course' => 'BUC3101',
-            ],
-
-            [
-                'student' => '2026/BBC/002',
-                'course' => 'BUC3103',
-            ],
-
-            [
-                'student' => '2026/BBC/003',
-                'course' => 'BUC3102',
-            ],
-
-            [
-                'student' => '2026/BBC/003',
-                'course' => 'BUC3104',
-            ],
-
-            [
-                'student' => '2026/BBC/004',
-                'course' => 'BUC3103',
-            ],
-
-            [
-                'student' => '2026/BBC/005',
-                'course' => 'BUC3104',
-            ],
-
-        ];
-
-
-        foreach ($registrations as $data) {
-
-            // FIND STUDENT
-
-            $student = Student::where(
-                'student_number',
-                $data['student']
-            )->firstOrFail();
-
-
-            // FIND COURSE
-
-            $course = Course::where(
-                'course_code',
-                $data['course']
-            )->firstOrFail();
-
-
-            // CREATE REGISTRATION
-
-            Registration::firstOrCreate(
-
-                [
-                    'student_id' => $student->id,
-                    'course_id' => $course->id,
-                ],
-
-                [
-                    'registration_date' => now(),
-                ]
-
-            );
-
-        }
-
-    }
-}
+                     
+                      }
+    

@@ -13,7 +13,7 @@ class StudentCourseSeeder extends Seeder
     public function run(): void
     {
 
-        // STEP 1: CREATE FIVE STUDENTS
+        // STEP 1: CREATE SIX STUDENTS
 
         $students = [
 
@@ -55,98 +55,108 @@ class StudentCourseSeeder extends Seeder
 
         ];
 
+
+        // LOOP THROUGH THE STUDENTS
+
         foreach ($students as $data) {
 
-            // CREATE STUDENT PROFILE
-
-            $student = Student::firstOrCreate(
-                [
-                    'registration_number' => $data['registration_number'],
-                ],
-                [
-                    'name' => $data['name'],
-                    'email' => $data['email'],
-                    
-                ]
-            );
-
-            // CREATE STUDENT USER ACCOUNT
+            // CREATE A USER ACCOUNT FOR EACH STUDENT
 
             $user = User::firstOrCreate(
+
                 [
                     'email' => $data['email'],
                 ],
+
                 [
                     'name' => $data['name'],
                     'password' => Hash::make('Bbc#2026'),
                 ]
+
             );
 
-            // LINK USER TO STUDENT PROFILE
 
-            $user->forceFill([
-                'student_id' => $student->id,
-            ])->save();
-
-            // ASSIGN STUDENT ROLE
+            // ASSIGN THE STUDENT ROLE TO THE USER
 
             $user->syncRoles(['student']);
+
+
+            // CREATE THE STUDENT PROFILE AND LINK IT TO THE USER
+
+            Student::updateOrCreate(
+
+                [
+                    'registration_number' => $data['registration_number'],
+                ],
+
+                [
+                    'name' => $data['name'],
+                    'email' => $data['email'],
+                    'user_id' => $user->id,
+                ]
+
+            );
 
         }
 
 
-        // STEP 2: GET LECTURER
-
-        $lecturer = User::where(
-            'email',
-            'lecturer@mubs.ac.ug'
-        )->firstOrFail();
-
-
-        // STEP 3: CREATE FOUR COURSES
+        // STEP 2: CREATE FOUR COURSES
 
         $courses = [
 
             [
-                'course_code' => 'BUC3101',
-                'title' => 'Advanced Web Development',
-                'description' => 'Web application development',
+                'code' => 'BUC3101',
+                'title' => 'Advanced Web Application Development',
+                'credit_units' => 5,
             ],
 
             [
-                'course_code' => 'BUC3102',
-                'course_name' => 'Database Management Systems',
-                'description' => 'Database design and management',
+                'code' => 'BUC3102',
+                'title' => 'Accounting Information System',
+                'credit_units' => 4,
             ],
 
             [
-                'course_code' => 'BUC3103',
-                'course_name' => 'Software Engineering',
-                'description' => 'Software development processes',
+                'code' => 'BUC3103',
+                'title' => 'Software Engineering for Business',
+                'credit_units' => 4,
             ],
 
             [
-                'course_code' => 'BUC3104',
-                'course_name' => 'Business Intelligence',
-                'description' => 'Data analysis and reporting',
+                'code' => 'BUC3104',
+                'title' => 'Mobile Application Development',
+                'credit_units' => 4,
             ],
 
         ];
 
+
+        // LOOP THROUGH THE COURSES AND SAVE THEM
+
         foreach ($courses as $data) {
 
-            Course::firstOrCreate(
+            Course::updateOrCreate(
+
                 [
-                    'course_code' => $data['course_code'],
+                    'code' => $data['code'],
                 ],
+
                 [
-                    'course_name' => $data['course_name'],
-                    'description' => $data['description'],
-                    'lecturer_id' => $lecturer->id,
+                    'title' => $data['title'],
+                    'credit_units' => $data['credit_units'],
                 ]
+
             );
 
         }
 
+
+        // DISPLAY A SUCCESS MESSAGE
+
+        $this->command->info(
+            'Six students and four courses created successfully!'
+        );
+
     }
+
 }
