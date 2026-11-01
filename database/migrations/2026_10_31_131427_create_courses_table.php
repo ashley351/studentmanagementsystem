@@ -14,7 +14,7 @@ return new class extends Migration
         Schema::create('courses', function (Blueprint $table) {
             $table->id();
             $table->string('code')->unique();
-            $table->string('title');
+            $table->string('tittle');
             $table->unsignedTinyInteger('credit_units')->default(3);
             $table->timestamps();
         });
