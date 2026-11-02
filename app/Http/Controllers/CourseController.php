@@ -56,9 +56,9 @@ class CourseController extends Controller
     /**
      * Update the specified resource in storage.
      */
-    public function update(Request $request, Course $course)
+    public function update(CourseRequest $request, Course $course)
     {
-        $request->update($request->validated());
+        $course->update($request->validated());
         return redirect()->route('courses.index')->with('success', 'Course updated successfully.');
     }
 
