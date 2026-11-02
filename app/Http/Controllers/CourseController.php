@@ -2,8 +2,9 @@
 
 namespace App\Http\Controllers;
 
-use App\Models\Course;
-use Illuminate\Http\Request;
+use App\Models\CourserRequest;
+use Illuminate\Http\Course;
+use Illuminate\Http\User;
 
 class CourseController extends Controller
 {
@@ -12,7 +13,8 @@ class CourseController extends Controller
      */
     public function index()
     {
-        //
+    $courses =Course::with('lecturer')->latest()->paginate(10);
+    return view('courses.index', compact('courses'));
     }
 
     /**
@@ -20,15 +22,17 @@ class CourseController extends Controller
      */
     public function create()
     {
-        //
+        $lecturers = User::where('role', 'lecturer')->get();
+        return view('courses.create', compact('lecturers'));
     }
 
     /**
      * Store a newly created resource in storage.
      */
-    public function store(Request $request)
+    public function store(CourseRequest $request)
     {
-        //
+       course::create($request->validated());
+        return redirect()->route('courses.index')->with('success', 'Course created successfully.'); 
     }
 
     /**
@@ -36,7 +40,8 @@ class CourseController extends Controller
      */
     public function show(Course $course)
     {
-        //
+        $course->load('lecturer');
+        return view('courses.show', compact('course'));
     }
 
     /**
@@ -44,7 +49,8 @@ class CourseController extends Controller
      */
     public function edit(Course $course)
     {
-        //
+        $lecturers = User::where('role', 'lecturer')->get();
+        return view('courses.edit', compact('course', 'lecturers'));
     }
 
     /**
@@ -52,7 +58,8 @@ class CourseController extends Controller
      */
     public function update(Request $request, Course $course)
     {
-        //
+        $request->update($request->validated());
+        return redirect()->route('courses.index')->with('success', 'Course updated successfully.');
     }
 
     /**
@@ -60,6 +67,10 @@ class CourseController extends Controller
      */
     public function destroy(Course $course)
     {
-        //
+        if($course->students()->count() > 0) {
+            return redirect()->route('courses.index')->with('error', 'Cannot delete course with enrolled students.');
+        }
+        $course->delete();
+        return redirect()->route('courses.index')->with('success', 'Course deleted successfully.');
     }
 }
