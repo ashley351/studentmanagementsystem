@@ -1,13 +1,24 @@
 <?php
 
+use App\Http\Controllers\ProfileController;
+use App\Http\Controllers\RegistrationController;
 use Illuminate\Support\Facades\Route;
 
 Route::get('/', function () {
     return view('welcome');
 });
-use App\Http\Controllers\RegistrationController;
 
-Route::get('/register/create', [RegistrationController::class, 'create'])->name('registrations.create');
+Route::get('/dashboard', function () {
+    return view('dashboard');
+})->middleware(['auth', 'verified'])->name('dashboard');
 
-// Route to process the submitted form data
-Route::post('/register', [RegistrationController::class, 'store'])->name('registrations.store');
+Route::middleware('auth')->group(function () {
+    Route::get('/profile', [ProfileController::class, 'edit'])->name('profile.edit');
+    Route::patch('/profile', [ProfileController::class, 'update'])->name('profile.update');
+    Route::delete('/profile', [ProfileController::class, 'destroy'])->name('profile.destroy');
+
+    Route::get('/registrations/create', [RegistrationController::class, 'create'])->name('registrations.create');
+    Route::post('/registrations', [RegistrationController::class, 'store'])->name('registrations.store');
+});
+
+require __DIR__.'/auth.php';
