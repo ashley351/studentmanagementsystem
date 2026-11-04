@@ -62,4 +62,10 @@ class CourseController extends Controller
     {
         //
     }
+
+    public function assigned()
+{
+    $courses = Course::where('lecturer_id', auth()->id())->get();
+    return view('courses.assigned', compact('courses'));
+}
 }

@@ -105,5 +105,16 @@ class RolesAndPermissionsSeeder extends Seeder
             'Roles and permissions created and assigned successfully!'
         );
 
+        foreach (['admin','lecturer','student'] as $r) Role::firstOrCreate(['name'=>$r]);
+foreach (['view courses','view assigned courses','view own registrations','register courses'] as $p)
+    Permission::firstOrCreate(['name'=>$p]);
+
+Role::findByName('student')->givePermissionTo(['view courses','register courses','view own registrations']);
+Role::findByName('lecturer')->givePermissionTo(['view assigned courses']);
+Role::findByName('admin')->givePermissionTo(Permission::all());
+
+$u = \App\Models\User::where('email','you@example.com')->first();
+$u->assignRole('admin');
+
     }
 }
