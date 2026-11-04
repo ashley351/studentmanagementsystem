@@ -20,8 +20,21 @@
 </div>
 
 <div class="mt-4">
-    <x-input-label for="credits" :value="__('Credits')" />
-    <x-text-input id="credits" name="credits" type="number" class="mt-1 block w-full"
-                  :value="old('credits', $course->credits ?? '')" />
-    <x-input-error :messages="$errors->get('credits')" class="mt-2" />
+    <x-input-label for="credit_units" :value="__('Credit Units')" />
+    <x-text-input id="credit_units" name="credit_units" type="number" min="1" max="10" class="mt-1 block w-full"
+                  :value="old('credit_units', $course->credit_units ?? 3)" />
+    <x-input-error :messages="$errors->get('credit_units')" class="mt-2" />
+</div>
+
+<div class="mt-4">
+    <x-input-label for="lecturer_id" :value="__('Lecturer')" />
+    <select id="lecturer_id" name="lecturer_id" class="mt-1 block w-full border-gray-300 rounded-md shadow-sm">
+        <option value="">Unassigned</option>
+        @foreach ($lecturers as $lecturer)
+            <option value="{{ $lecturer->id }}" @selected(old('lecturer_id', $course->lecturer_id ?? '') == $lecturer->id)>
+                {{ $lecturer->name }}
+            </option>
+        @endforeach
+    </select>
+    <x-input-error :messages="$errors->get('lecturer_id')" class="mt-2" />
 </div>

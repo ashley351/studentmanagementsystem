@@ -11,29 +11,27 @@ return new class extends Migration
      */
     public function up(): void
     {
-        Schema::table('students', function (Blueprint $table) {
-
-        $table->foreignId('user_id')
-              ->nullable()
-              ->after('id')
-              ->constrained('users')
-              ->nullOnDelete();
-
-    });
-
+        if (! Schema::hasColumn('students', 'user_id')) {
+            Schema::table('students', function (Blueprint $table) {
+                $table->foreignId('user_id')
+                    ->nullable()
+                    ->after('id')
+                    ->constrained('users')
+                    ->nullOnDelete();
+            });
+        }
     }
 
     /**
      * Reverse the migrations.
      */
 
-public function down(): void
-{
-    Schema::table('students', function (Blueprint $table) {
-
-        $table->dropConstrainedForeignId('user_id');
-
-    });
-}
+    public function down(): void
+    {
+        if (Schema::hasColumn('students', 'user_id')) {
+            Schema::table('students', function (Blueprint $table) {
+                $table->dropConstrainedForeignId('user_id');
+            });
+        }
+    }
 };
-

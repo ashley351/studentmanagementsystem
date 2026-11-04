@@ -23,7 +23,8 @@
                         <tr>
                             <th class="py-2 pr-4">Code</th>
                             <th class="py-2 pr-4">Title</th>
-                            <th class="py-2 pr-4">Credits</th>
+                            <th class="py-2 pr-4">Credit Units</th>
+                            <th class="py-2 pr-4">Lecturer</th>
                             <th class="py-2">Actions</th>
                         </tr>
                     </thead>
@@ -32,7 +33,8 @@
                             <tr class="border-b">
                                 <td class="py-2 pr-4">{{ $course->code }}</td>
                                 <td class="py-2 pr-4">{{ $course->title }}</td>
-                                <td class="py-2 pr-4">{{ $course->credits }}</td>
+                                <td class="py-2 pr-4">{{ $course->credit_units }}</td>
+                                <td class="py-2 pr-4">{{ $course->lecturer?->name ?? 'Unassigned' }}</td>
                                 <td class="py-2 flex gap-3">
                                     <a href="{{ route('courses.show', $course) }}" class="text-blue-600 underline">View</a>
                                     <a href="{{ route('courses.edit', $course) }}" class="text-yellow-600 underline">Edit</a>
@@ -45,7 +47,7 @@
                                 </td>
                             </tr>
                         @empty
-                            <tr><td colspan="4" class="py-4 text-center">No courses found.</td></tr>
+                            <tr><td colspan="5" class="py-4 text-center">No courses found.</td></tr>
                         @endforelse
                     </tbody>
                 </table>

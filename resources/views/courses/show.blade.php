@@ -9,7 +9,8 @@
         <div class="max-w-3xl mx-auto sm:px-6 lg:px-8">
             <div class="bg-white shadow-sm sm:rounded-lg p-6">
                 <p class="mb-2">{{ $course->description }}</p>
-                <p class="mb-4"><strong>Credits:</strong> {{ $course->credits }}</p>
+                <p class="mb-4"><strong>Credit Units:</strong> {{ $course->credit_units }}</p>
+                <p class="mb-4"><strong>Lecturer:</strong> {{ $course->lecturer?->name ?? 'Unassigned' }}</p>
                 <a href="{{ route('courses.index') }}" class="text-gray-600 underline">Back</a>
             </div>
         </div>
