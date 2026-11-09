@@ -8,23 +8,11 @@ return new class extends Migration
 {
     public function up(): void
     {
-        Schema::table('courses', function (Blueprint $table) {
-
-            $table->foreignId('lecturer_id')
-                  ->nullable()
-                  ->after('credit_units')
-                  ->constrained('users')
-                  ->nullOnDelete();
-
-        });
+        // The lecturer_id column is already added by the earlier migration.
     }
 
     public function down(): void
     {
-        Schema::table('courses', function (Blueprint $table) {
-
-            $table->dropConstrainedForeignId('lecturer_id');
-
-        });
+        // This duplicate migration owns no schema changes to reverse.
     }
 };

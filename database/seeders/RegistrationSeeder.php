@@ -13,28 +13,28 @@ class RegistrationSeeder extends Seeder
           public function run(): void {
              $registrations = [ 
                  ['registration_number' => '24/U/11375/PS',
-                  'code' => 'BUC3101', ],
+                  'code' => 'BUC3101', 'days_ago' => 2],
                   
                   [ 'registration_number' => '24/U/03713/PS', 
-                  'code' => 'BUC3102', ], 
+                  'code' => 'BUC3102', 'days_ago' => 5], 
                   
                   [ 'registration_number' => '24/U/25160/PS', 
-                  'code' => 'BUC3101', ], 
+                  'code' => 'BUC3101', 'days_ago' => 8], 
                   
                   [ 'registration_number' => '24/U/20186/EVE',
-                   'code' => 'BUC3103', ],
+                   'code' => 'BUC3103', 'days_ago' => 11],
                    
                    [ 'registration_number' => '24/U/06148/PS', 
-                   'code' => 'BUC3102', ], 
+                   'code' => 'BUC3102', 'days_ago' => 14], 
                    
                    [ 'registration_number' => '24/U/11375/PS', 
-                   'code' => 'BUC3104', ], 
+                   'code' => 'BUC3104', 'days_ago' => 17], 
                    
                    [ 'registration_number' => '24/U/06148/PS', 
-                   'code' => 'BUC3103', ],
+                   'code' => 'BUC3103', 'days_ago' => 20],
                    
                    [ 'registration_number' => '24/U/04960/PS',
-                    'code' => 'BUC3104', ],
+                    'code' => 'BUC3104', 'days_ago' => 23],
                      ];
 
         // Insert registrations
@@ -67,9 +67,10 @@ class RegistrationSeeder extends Seeder
                  'student_id' => $student->id, 
                  'course_id' => $course->id,
                   ], 
-                  [ 'created_at' => now(),
-                  
-                  'updated_at' => now(), ] ); 
+                  [
+                    'created_at' => now()->subDays($data['days_ago'])->setTime(10, 0),
+                    'updated_at' => now(),
+                  ] ); 
                   }
                    $this->command->info
                    
