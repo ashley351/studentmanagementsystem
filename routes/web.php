@@ -8,7 +8,7 @@ use App\Http\Controllers\StudentController;
 Route::get('/', function () {
     return view('welcome');
 });
- feature/student-management
+
 Route::resource('students', StudentController::class);
 
 Route::get('/dashboard', function () {
@@ -24,5 +24,4 @@ Route::middleware('auth')->group(function () {
     Route::post('/registrations', [RegistrationController::class, 'store'])->name('registrations.store');
 });
 
-require __DIR__.'/auth.php';
- develop
+require __DIR__.'/auth.php'; 
