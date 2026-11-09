@@ -17,10 +17,9 @@ class StudentRequest extends FormRequest
         $id = $this->route('student')?->id;
 
         return [
-            'student_number' => ['required', 'string', 'max:20', Rule::unique('students')->ignore($id)],
-            'name'           => ['required', 'string', 'max:255'],
-            'email'          => ['required', 'email', Rule::unique('students')->ignore($id)],
-            'phone'          => ['nullable', 'string', 'max:20'],
+            'registration_number' => ['required', 'string', 'max:255', Rule::unique('students')->ignore($id)],
+            'name'                => ['required', 'string', 'max:255'],
+            'email'               => ['required', 'email', Rule::unique('students')->ignore($id)],
         ];
     }
 }

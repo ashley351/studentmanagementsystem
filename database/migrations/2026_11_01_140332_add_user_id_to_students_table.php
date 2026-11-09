@@ -11,29 +11,16 @@ return new class extends Migration
      */
     public function up(): void
     {
-        Schema::table('students', function (Blueprint $table) {
-
-        $table->foreignId('user_id')
-              ->nullable()
-              ->after('id')
-              ->constrained('users')
-              ->nullOnDelete();
-
-    });
-
+        // The user_id column is already added by the earlier migration.
     }
 
     /**
      * Reverse the migrations.
      */
 
-public function down(): void
-{
-    Schema::table('students', function (Blueprint $table) {
-
-        $table->dropConstrainedForeignId('user_id');
-
-    });
-}
+    public function down(): void
+    {
+        // This duplicate migration owns no schema changes to reverse.
+    }
 };
 

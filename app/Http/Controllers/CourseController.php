@@ -12,7 +12,12 @@ class CourseController extends Controller
      */
     public function index()
     {
-        //
+        $courses = Course::with('lecturer')
+            ->withCount('registrations')
+            ->orderBy('code')
+            ->paginate(10);
+
+        return view('courses.index', compact('courses'));
     }
 
     /**

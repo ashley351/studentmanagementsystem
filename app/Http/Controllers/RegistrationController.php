@@ -2,10 +2,11 @@
 
 namespace App\Http\Controllers;
 
+use App\Models\Course;
+use App\Models\CourseRegistration;
+use App\Models\Student;
 use Illuminate\Http\Request;
 
-use  Illuminate\Support\Facades\DB;
- // added this to interact with the xampp database table
 class RegistrationController extends Controller
 {
     /**
@@ -13,7 +14,11 @@ class RegistrationController extends Controller
      */
     public function index()
     {
-        //
+        $registrations = CourseRegistration::with(['student', 'course'])
+            ->latest()
+            ->paginate(10);
+
+        return view('registrations.index', compact('registrations'));
     }
 
     /**
@@ -21,9 +26,10 @@ class RegistrationController extends Controller
      */
     public function create()
     {
-        // this tells laravel to look for a view file named 'create.balde.php'
-        //inside a folder named 'registrations.create'
-        return view('registrations.create');
+        $students = Student::orderBy('name')->get();
+        $courses = Course::orderBy('code')->get();
+
+        return view('registrations.create', compact('students', 'courses'));
     }
 
     /**
@@ -31,53 +37,14 @@ class RegistrationController extends Controller
      */
     public function store(Request $request)
     {
-        // Validate the incoming form fields from the student
-        $validate =$request->validate([
-            'name'=>'required|string|max:255',
-            'email'=>'required|email|unique:registrations'
+        $validated = $request->validate([
+            'student_id' => ['required', 'exists:students,id'],
+            'course_id' => ['required', 'exists:courses,id'],
         ]);
 
-        //insert the student into your xampp database table
-        //Note: Replace 'students' with the exact name of you made in phpMyAdmin
-        DB::table('students')->insert([
-            'name'=> $validated['name'],
-            'email'=> $validated['email'],
-            'created_at' => now(),
-            'updated_at' => now(),
-        ]);
-        //Redirect back to the form page with a success message alert
-        return redirect()->route('registrations.create')->with('success', 'Student registered successfully!');
-    }
+        CourseRegistration::firstOrCreate($validated);
 
-    /**
-     * Display the specified resource.
-     */
-    public function show(string $id)
-    {
-        //
-    }
-
-    /**
-     * Show the form for editing the specified resource.
-     */
-    public function edit(string $id)
-    {
-        //
-    }
-
-    /**
-     * Update the specified resource in storage.
-     */
-    public function update(Request $request, string $id)
-    {
-        //
-    }
-
-    /**
-     * Remove the specified resource from storage.
-     */
-    public function destroy(string $id)
-    {
-        //
+        return redirect()->route('registrations.index')
+            ->with('success', 'Course registration saved successfully.');
     }
 }

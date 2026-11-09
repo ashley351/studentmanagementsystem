@@ -6,10 +6,7 @@ use Illuminate\Database\Eloquent\Model;
 
 class Student extends Model
 {
- 
-    protected $fillable = ['student_number', 'name', 'email', 'phone'];
-}
-
+    protected $fillable = ['registration_number', 'name', 'email', 'user_id'];
 
     public function registrations()
     {
@@ -27,5 +24,3 @@ class Student extends Model
         return $this->belongsTo(User::class);
     }
 }
-
- 
