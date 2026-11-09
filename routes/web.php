@@ -3,10 +3,13 @@
 use App\Http\Controllers\ProfileController;
 use App\Http\Controllers\RegistrationController;
 use Illuminate\Support\Facades\Route;
+use App\Http\Controllers\StudentController;
 
 Route::get('/', function () {
     return view('welcome');
 });
+ feature/student-management
+Route::resource('students', StudentController::class);
 
 Route::get('/dashboard', function () {
     return view('dashboard');
@@ -22,3 +25,4 @@ Route::middleware('auth')->group(function () {
 });
 
 require __DIR__.'/auth.php';
+ develop

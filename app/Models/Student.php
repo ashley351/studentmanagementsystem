@@ -6,6 +6,10 @@ use Illuminate\Database\Eloquent\Model;
 
 class Student extends Model
 {
+ feature/student-management
+    protected $fillable = ['student_number', 'name', 'email', 'phone'];
+}
+
     protected $fillable = ['name', 'email', 'registration_number'];
 
     public function registrations()
@@ -25,3 +29,4 @@ class Student extends Model
     }
 }
 
+ develop
