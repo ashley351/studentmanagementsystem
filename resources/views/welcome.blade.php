@@ -5,6 +5,7 @@
     <meta name="viewport" content="width=device-width, initial-scale=1">
     <meta name="csrf-token" content="{{ csrf_token() }}">
     <title>{{ config('app.name', 'Student Management System') }} | MUBS</title>
+    <link rel="icon" type="image/png" href="{{ asset('assets/img/logo.png') }}">
     <link rel="preconnect" href="https://fonts.bunny.net">
     <link href="https://fonts.bunny.net/css?family=figtree:400,500,600,700,800&display=swap" rel="stylesheet">
     @vite(['resources/css/app.css', 'resources/js/app.js'])
@@ -17,11 +18,8 @@
 
         <header class="mx-auto flex max-w-7xl items-center justify-between px-5 py-5 sm:px-8 lg:px-10">
             <a href="{{ url('/') }}" class="flex items-center gap-3 text-white" aria-label="Student Management System home">
-                <span class="flex h-11 w-11 items-center justify-center rounded-xl bg-white/10 ring-1 ring-white/20">
-                    <svg class="h-6 w-6" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.7" aria-hidden="true">
-                        <path stroke-linecap="round" stroke-linejoin="round" d="M3 7.5 12 3l9 4.5-9 4.5-9-4.5Z" />
-                        <path stroke-linecap="round" stroke-linejoin="round" d="M6 9v6c3.5 3 8.5 3 12 0V9M21 8v7" />
-                    </svg>
+                <span class="flex h-12 w-12 shrink-0 items-center justify-center rounded-xl bg-white p-1.5 shadow-sm">
+                    <img src="{{ asset('assets/img/logo.png') }}" alt="MUBS crest" class="h-full w-full object-contain">
                 </span>
                 <span>
                     <span class="block text-sm font-bold tracking-wide sm:text-base">Student Management</span>
